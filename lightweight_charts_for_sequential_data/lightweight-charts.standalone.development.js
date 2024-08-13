@@ -12982,12 +12982,44 @@
             }
             return result;
         }
-        setData(data) {
-            checkItemsAreOrdered(data, this._private__horzScaleBehavior);
-            checkSeriesValuesType(this._internal__series._internal_seriesType(), data);
-            this._internal__dataUpdatesConsumer._internal_applyNewData(this._internal__series, data);
-            this._private__onDataChanged('full');
-        }
+        setData(data, targetCol, xAxisCol) {
+			if (targetCol===undefined){
+				alert("in the function setData, 'targetCol' parameter is required");
+				throw new Error("in the function setData, 'targetCol' parameter is required");
+			}
+			else {
+				const oldKey = targetCol;
+				const newKey = "value";
+				data = data.map(dict => {
+					if (oldKey in dict) {
+						const { [oldKey]: value, ...rest } = dict;
+							   return { ...rest, [newKey]: value };
+					}
+					return dict;
+				})
+			}
+			if (xAxisCol===undefined){
+				data = data.map((dict, index) => ({
+					...dict,
+					time: index + 1
+				}));    
+			}
+			else {
+				oldKey = targetCol;
+				newKey = "time";
+				data = data.map(dict => {
+					if (oldKey in dict) {
+						const { [oldKey]: value, ...rest } = dict;
+							   return { ...rest, [newKey]: value };
+					}
+					return dict;
+				})
+			}
+			checkItemsAreOrdered(data, this._private__horzScaleBehavior);
+			checkSeriesValuesType(this._internal__series._internal_seriesType(), data);
+			this._internal__dataUpdatesConsumer._internal_applyNewData(this._internal__series, data);
+			this._private__onDataChanged('full');
+		}
         update(bar) {
             checkSeriesValuesType(this._internal__series._internal_seriesType(), [bar]);
             this._internal__dataUpdatesConsumer._internal_updateData(this._internal__series, bar);
