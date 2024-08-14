@@ -13005,7 +13005,7 @@
 				}));    
 			}
 			else {
-				oldKey = targetCol;
+				oldKey = xAxisCol;
 				newKey = "time";
 				data = data.map(dict => {
 					if (oldKey in dict) {
