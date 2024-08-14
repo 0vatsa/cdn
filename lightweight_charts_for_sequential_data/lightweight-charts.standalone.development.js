@@ -12983,13 +12983,16 @@
             return result;
         }
         setData(data, targetCol, xAxisCol) {
+			
+			let oldKey, newKey;
+			
 			if (targetCol===undefined){
 				alert("in the function setData, 'targetCol' parameter is required");
 				throw new Error("in the function setData, 'targetCol' parameter is required");
 			}
 			else {
-				const oldKey = targetCol;
-				const newKey = "value";
+				oldKey = targetCol;
+				newKey = "value";
 				data = data.map(dict => {
 					if (oldKey in dict) {
 						const { [oldKey]: value, ...rest } = dict;
